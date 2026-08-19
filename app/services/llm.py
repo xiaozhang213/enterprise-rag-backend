@@ -28,21 +28,46 @@ def build_context(chunks: list[dict]) -> str:
     return "\n\n".join(parts)
 
 
-def generate_answer(question: str, chunks: list[dict]) -> str:
+def generate_answer_stream(question: str, chunks: list[dict]):
+    """
+    流式版本：用生成器逐块yield文本，而不是等模型说完整段话再返回。
+    """
     context = build_context(chunks)
-
     user_message = f"""参考资料：
 {context}
 
 用户问题：{question}
 """
 
-    response = _client.chat.completions.create(
+    stream = _client.chat.completions.create(
         model=settings.openai_chat_model,
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_message},
         ],
-        temperature=0.2,  # 问答场景要低temperature，减少发挥空间
+        temperature=0.2,
+        stream=True,  # 关键参数：开启流式
     )
-    return response.choices[0].message.content
+
+    for chunk in stream:
+        delta = chunk.choices[0].delta.content
+        if delta:
+            yield delta
+# def generate_answer(question: str, chunks: list[dict]) -> str:
+#     context = build_context(chunks)
+
+#     user_message = f"""参考资料：
+# {context}
+
+# 用户问题：{question}
+# """
+
+#     response = _client.chat.completions.create(
+#         model=settings.openai_chat_model,
+#         messages=[
+#             {"role": "system", "content": SYSTEM_PROMPT},
+#             {"role": "user", "content": user_message},
+#         ],
+#         temperature=0.2,  # 问答场景要低temperature，减少发挥空间
+#     )
+#     return response.choices[0].message.content

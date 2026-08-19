@@ -9,3 +9,15 @@ pinecone-client==5.0.1
 pymupdf==1.24.10
 python-docx==1.1.2
 python-dotenv==1.0.1
+
+# eval/ 目录下测试脚本用到的依赖
+datasets==3.0.1
+requests==2.32.3
+
+ragas==0.3.9
+langchain-openai==0.2.14
+# eval/ 测试脚本依赖
+requests==2.32.3
+datasets==3.0.1
+ragas==0.3.9
+langchain-openai==0.2.14
