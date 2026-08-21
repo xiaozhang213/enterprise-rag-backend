@@ -6,6 +6,8 @@ eval/ingest_once.py
 """
 from pathlib import Path
 
+from pinecone.core.openapi.shared.exceptions import NotFoundException
+
 import requests
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -36,3 +38,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+    confirm = input("确认要清空整个向量库索引吗？这会删除所有已上传的文档数据 (y/n): ")
+    if confirm.lower() == "y":
+        index = get_index()
+        try:
+            index.delete(delete_all=True)
+            print("已清空。请重新运行 eval/ingest_once.py 上传文档。")
+        except NotFoundException:
+            print("索引本来就是空的，无需清空，可以直接运行 eval/ingest_once.py。")
+    else:
+        print("已取消。")

@@ -12,6 +12,7 @@ import hashlib
 from pinecone import Pinecone, ServerlessSpec
 
 from app.config import settings
+from typing import Optional
 
 _pc = Pinecone(api_key=settings.pinecone_api_key)
 
@@ -43,27 +44,26 @@ def _generate_chunk_id(source: str, chunk_index: int) -> str:
     raw = f"{source}::chunk_{chunk_index}"
     return hashlib.sha256(raw.encode()).hexdigest()
 
+def generate_chunk_ids(chunks: list[str], source: str) -> list[str]:
+    """暴露成公开函数，方便ingest时同一批ID同时喂给向量库和关键词索引"""
+    return [_generate_chunk_id(source, i) for i in range(len(chunks))]
 
-def upsert_chunks(chunks: list[str], embeddings: list[list[float]], source: str) -> int:
-    index = get_index()
+
+def upsert_chunks(chunks: list[str], embeddings: list[list[float]], source: str, ids: Optional[list[str]] = None) -> int:
+    ids = ids or generate_chunk_ids(chunks, source)
     vectors = [
-        {
-            "id": _generate_chunk_id(source, i),
-            "values": vector,
-            "metadata": {"content": chunk, "source": source},
-        }
-        for i, (chunk, vector) in enumerate(zip(chunks, embeddings))
+        {"id": cid, "values": vector, "metadata": {"content": chunk, "source": source}}
+        for cid, chunk, vector in zip(ids, chunks, embeddings)
     ]
-
+    index = get_index()
     for i in range(0, len(vectors), UPSERT_BATCH_SIZE):
         batch = vectors[i:i + UPSERT_BATCH_SIZE]
         if batch:
             index.upsert(vectors=batch)
-
     return len(vectors)
 
+
 def query_similar(query_vector: list[float], top_k: int) -> list[dict]:
-    """检索最相似的 top_k 个chunk，返回文本+来源+相似度分数"""
     index = get_index()
     result = index.query(vector=query_vector, top_k=top_k, include_metadata=True)
     matches = []
@@ -71,9 +71,45 @@ def query_similar(query_vector: list[float], top_k: int) -> list[dict]:
         metadata = match.get("metadata", {})
         matches.append(
             {
+                "id": match.get("id"),  # 新增：暴露ID，用于跟BM25结果合并
                 "content": metadata.get("content", ""),
                 "source": metadata.get("source", "unknown"),
                 "score": match.get("score", 0.0),
             }
         )
     return matches
+
+
+# def upsert_chunks(chunks: list[str], embeddings: list[list[float]], source: str) -> int:
+#     index = get_index()
+#     vectors = [
+#         {
+#             "id": _generate_chunk_id(source, i),
+#             "values": vector,
+#             "metadata": {"content": chunk, "source": source},
+#         }
+#         for i, (chunk, vector) in enumerate(zip(chunks, embeddings))
+#     ]
+
+#     for i in range(0, len(vectors), UPSERT_BATCH_SIZE):
+#         batch = vectors[i:i + UPSERT_BATCH_SIZE]
+#         if batch:
+#             index.upsert(vectors=batch)
+
+#     return len(vectors)
+
+# def query_similar(query_vector: list[float], top_k: int) -> list[dict]:
+#     """检索最相似的 top_k 个chunk，返回文本+来源+相似度分数"""
+#     index = get_index()
+#     result = index.query(vector=query_vector, top_k=top_k, include_metadata=True)
+#     matches = []
+#     for match in result.get("matches", []):
+#         metadata = match.get("metadata", {})
+#         matches.append(
+#             {
+#                 "content": metadata.get("content", ""),
+#                 "source": metadata.get("source", "unknown"),
+#                 "score": match.get("score", 0.0),
+#             }
+#         )
+#     return matches

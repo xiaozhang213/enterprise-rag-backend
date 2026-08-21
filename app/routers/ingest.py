@@ -9,6 +9,10 @@ from pydantic import BaseModel
 from app.models.schemas import IngestResponse
 from app.services import chunking, document_parser, embeddings, vector_store
 
+from typing import Optional
+
+from app.services import keyword_index
+
 router = APIRouter(prefix="/ingest", tags=["ingest"])
 logger = logging.getLogger("enterprise_rag.ingest")
 
@@ -17,9 +21,14 @@ MAX_FILES_PER_BATCH = 10  # 防止demo环境被一次性传爆
 
 class BatchIngestResult(BaseModel):
     filename: str
-    status: str          # "success" 或 "failed"
+    status: str
     chunks_created: int = 0
-    error: str | None = None
+    error: Optional[str] = None
+# class BatchIngestResult(BaseModel):
+#     filename: str
+#     status: str          # "success" 或 "failed"
+#     chunks_created: int = 0
+#     error: str | None = None
 
 
 class BatchIngestResponse(BaseModel):
@@ -52,8 +61,10 @@ def _ingest_single_file(filename: str, file_bytes: bytes) -> BatchIngestResult:
         return BatchIngestResult(filename=filename, status="failed", error="切分后没有有效内容")
 
     try:
+        chunk_ids = vector_store.generate_chunk_ids(chunks, filename)
         vectors = embeddings.embed_texts(chunks)
         count = vector_store.upsert_chunks(chunks, vectors, source=filename)
+        keyword_index.add_documents(chunk_ids, chunks, filename) 
     except Exception:
         logger.exception("向量化或入库失败: %s", filename)
         return BatchIngestResult(filename=filename, status="failed", error="向量库服务暂时不可用")

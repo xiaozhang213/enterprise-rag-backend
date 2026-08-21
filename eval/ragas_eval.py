@@ -22,7 +22,8 @@ from ragas import EvaluationDataset, evaluate
 from langchain_openai import OpenAIEmbeddings as LangchainOpenAIEmbeddings
 from ragas.embeddings import LangchainEmbeddingsWrapper
 from ragas.llms import LangchainLLMWrapper
-from ragas.metrics import faithfulness, answer_relevancy, context_recall, factual_correctness
+from ragas.metrics import faithfulness, answer_relevancy, context_recall, FactualCorrectness
+# from ragas.metrics import faithfulness, answer_relevancy, context_recall, factual_correctness
 from ragas.metrics.base import MetricWithLLM, MetricWithEmbeddings
 from ragas.run_config import RunConfig
 
@@ -137,11 +138,17 @@ def main():
     print(f"评估 {len(with_reference)} 条有标准答案的样本 (完整指标)")
     print(f"{'='*60}")
 
+
     metrics_with_ref = attach_llm_and_embeddings(
-        [faithfulness, answer_relevancy, context_recall, factual_correctness],
+        [faithfulness, answer_relevancy, context_recall, FactualCorrectness()],
         evaluator_llm,
         evaluator_embeddings,
-    )
+      )
+    # metrics_with_ref = attach_llm_and_embeddings(
+    #     [faithfulness, answer_relevancy, context_recall, factual_correctness],
+    #     evaluator_llm,
+    #     evaluator_embeddings,
+    # )
 
     if with_reference:
         ds = EvaluationDataset.from_list(with_reference)

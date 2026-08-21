@@ -87,3 +87,11 @@ http://localhost:8000/docs
 - Day 2: Next.js frontend + deployment (Vercel + Render)
 - Day 3: streaming responses, error handling polish, README/architecture diagram
 - Later: RAGAS evaluation, unit tests, reranking, hybrid search, auth
+
+**RAGAS automated metrics** (post hybrid retrieval upgrade):
+| Metric | Score | What it measures |
+|---|---|---|
+| Faithfulness | 0.94 | % of answer content directly supported by retrieved context |
+| Answer Relevancy | 0.87 | How well the answer addresses the actual question asked |
+| Context Recall | 0.89 | How completely the retriever surfaced the needed information |
+| Factual Correctness (F1) | 0.49 | See note below — score is depressed by terse manual reference answers, not by system inaccuracy |

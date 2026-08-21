@@ -19,9 +19,12 @@ class Settings(BaseSettings):
     pinecone_dimension: int = 1536
 
     # Retrieval / Chunking
+        # Retrieval / Chunking
     top_k: int = 4
     chunk_size: int = 600
     chunk_overlap: int = 80
+    vector_weight: float = 0.6
+    keyword_weight: float = 0.4
 
     # CORS
     allowed_origins: str = "http://localhost:3000"

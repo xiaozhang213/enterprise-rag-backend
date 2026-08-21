@@ -10,6 +10,13 @@ from app.config import settings
 from app.models.schemas import QueryRequest
 from app.services import embeddings, llm, vector_store
 
+from app.services import retrieval
+
+import logging
+
+logger = logging.getLogger("enterprise_rag.query")
+
+
 router = APIRouter(prefix="/query", tags=["query"])
 
 
@@ -25,10 +32,11 @@ async def query_knowledge_base(request: QueryRequest):
     # 检索阶段不是耗时瓶颈，保持同步调用，只对LLM生成做流式
     try:
         query_vector = embeddings.embed_query(request.question)
-        matches = vector_store.query_similar(query_vector, top_k=top_k)
+        matches = retrieval.hybrid_search(query_vector, request.question, top_k=top_k)
     except Exception:
+        logger.exception("检索失败: question=%s", request.question)  # 加这一行
         raise HTTPException(status_code=503, detail="检索服务暂时不可用，请稍后重试")
-
+   
     def event_stream():
         if not matches:
             yield _sse_event(
