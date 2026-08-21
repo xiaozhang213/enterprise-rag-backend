@@ -60,16 +60,15 @@ def parse_sse_response(resp) -> dict:
     return {"answer": answer, "sources": sources, "error": error}
 
 def debug_retrieval(question: str):
-    """诊断用：直接调后端看实际检索到了哪些chunk内容,不经过LLM生成"""
     import sys
     from pathlib import Path
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-    from app.services import embeddings, vector_store
+    from app.services import embeddings, retrieval  # 改成用 retrieval 而不是 vector_store
     from app.config import settings
 
     query_vector = embeddings.embed_query(question)
-    matches = vector_store.query_similar(query_vector, top_k=settings.top_k)
+    matches = retrieval.hybrid_search(query_vector, question, top_k=settings.top_k)  # 改这一行
 
     print(f"\n{'='*70}")
     print(f"诊断问题: {question}")
