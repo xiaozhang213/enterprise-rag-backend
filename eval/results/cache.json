@@ -1,0 +1,522 @@
+{
+ "A|un-01": {
+  "config": "A",
+  "id": "un-01",
+  "type": "unanswerable",
+  "question": "How many parameters does GPT-4 have?",
+  "query_used": "How many parameters does GPT-4 have?",
+  "retrieved_sources": [
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "06_lora_low_rank_adaptation.pdf"
+  ],
+  "contexts": [
+   "\n6\n3\n2\n1.0\nGPT-3 Medium\n7.42E+00\n6.41E+20\n356\n300\n6\n3\n2\n1.0\nGPT-3 Large\n1.58E+011.37E+21\n760\n300\n6\n3\n2\n1.0\nGPT-3 XL\n2.75E+01\n2.38E+21\n1,320\n300\n6\n3\n2\n1.0\nGPT-3 2.7B\n5.52E+01\n4.77E+21\n2,650\n300\n6\n3\n2\n1.0\nGPT-3 6.7B\n1.39E+02\n1.20E+22\n6,660\n300\n6\n3\n2\n1.0\nGPT-3 13B\n2.68E+02\n2.31E+22\n12,850\n300\n6\n3\n2\n1.0\nGPT-3 175B\n3.64E+03\n3.14E+23\n174,600\n300\n6\n3\n2\n1.0\nTable D.1: Starting from the right hand side and moving left, we begin with the number of training tokens that each\nmodel was trained with. Next we note that since T5 uses an encoder-decoder model, only half of the parameters are",
+   "rain 8 different sizes of model, ranging over three orders of magnitude from 125million parameters to 175 billion parameters, with the last being the model we call GPT-3. Previous work [KMH+20]\nsuggests that with enough training data, scaling of validation loss should be approximately a smooth power law as a\nfunction of size; training models of many different sizes allows us to test this hypothesis both for validation loss and for\ndownstream language tasks.\nTable 2.1 shows the sizes and architectures of our 8 models. Here nparams is the total number of trainable parameters,",
+   "cusses\nthe details of how we do few-shot, one-shot, and zero-shot evaluations.\n7Model Name\nnparams\nnlayers\ndmodel\nnheads\ndhead\nBatch Size\nLearning Rate\nGPT-3 Small\n125M\n12\n768\n12\n64\n0.5M\n6.0 × 10−4\nGPT-3 Medium\n350M\n24\n1024\n16\n64\n0.5M\n3.0 × 10−4\nGPT-3 Large\n760M\n24\n1536\n16\n96\n0.5M\n2.5 × 10−4\nGPT-3 XL\n1.3B\n24\n2048\n24\n128\n1M\n2.0 × 10−4\nGPT-3 2.7B\n2.7B\n32\n2560\n32\n80\n1M\n1.6 × 10−4\nGPT-3 6.7B\n6.7B\n32\n4096\n32\n128\n2M\n1.2 × 10−4\nGPT-3 13B\n13.0B\n40\n5140\n40\n128\n2M\n1.0 × 10−4\nGPT-3 175B or “GPT-3”\n175.0B\n96\n12288\n96\n128\n3.2M\n0.6 × 10−4\nTable 2.1: Sizes, architectures, and learning hyper-parameters (batch size in tokens and learning rate) of the models",
+   "ork (Li & Liang, 2021) on GPT-2, which adapts just the last two layers (FTTop2).4We still need the 350GB model during deployment; however, storing 100 adapted models only requires\n350GB + 35MB * 100 ≈354GB as opposed to 100 * 350GB ≈35TB.\n5For GPT-3 175B, the training throughput for full ﬁne-tuning is 32.5 tokens/s per V100 GPU; with the same\nnumber of weight shards for model parallelism, the throughput is 43.1 tokens/s per V100 GPU for LoRA.\n5"
+  ],
+  "answer": "According to the available information, no relevant information was found.",
+  "refused": true,
+  "latency_s": 3.454,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "A|mh-01": {
+  "config": "A",
+  "id": "mh-01",
+  "type": "multi_hop",
+  "question": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "query_used": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "retrieved_sources": [
+   "07_instructgpt_rlhf.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "06_lora_low_rank_adaptation.pdf"
+  ],
+  "contexts": [
+   "ing generalization to instructions outside of the RLHF ﬁne-\ntuning distribution.In particular, we ﬁnd that InstructGPT shows ability to follow instructions\nin non-English languages, and perform summarization and question-answering for code. This is\n15",
+   "PL performs slightly worse than LoRA even with more trainable parameters. We at-tribute this to the fact that preﬁx-layer tuning is very sensitive to the choice of learning rate and thus\nmakes the optimization of LoRA weights more difﬁcult in LoRA+PL.\nF\nADDITIONAL EMPIRICAL EXPERIMENTS\nF.1\nADDITIONAL EXPERIMENTS ON GPT-2\nWe also repeat our experiment on DART (Nan et al., 2020) and WebNLG (Gardent et al., 2017)\nfollowing the setup of Li & Liang (2021). The result is shown in Table 13. Similar to our result\non E2E NLG Challenge, reported in Section 5, LoRA performs better than or at least on-par with\npreﬁx-based approaches given the same number of trainable parameters.",
+   "\nSee Section D.2 for details on the hyperparameters used.\n5.4\nGPT-2 MEDIUM/LARGEHaving shown that LoRA can be a competitive alternative to full ﬁne-tuning on NLU, we hope to\nanswer if LoRA still prevails on NLG models, such as GPT-2 medium and large (Radford et al.,\nb). We keep our setup as close as possible to Li & Liang (2021) for a direct comparison. Due\nto space constraint, we only present our result on E2E NLG Challenge (Table 3) in this section.\nSee Section F.1 for results on WebNLG (Gardent et al., 2017) and DART (Nan et al., 2020). We\ninclude a list of the hyperparameters used in Section D.3.\n7",
+   "e hyperparameters used. For preﬁx-embedding tuning, we ﬁnd the optimal lp and lito be 256 and 8, respectively, totalling 3.2M trainable parameters. We use lp = 8 and li = 8 for\npreﬁx-layer tuning with 20.2M trainable parameters to obtain the overall best performance. We\npresent two parameter budgets for LoRA: 4.7M (rq = rv = 1 or rv = 2) and 37.7M (rq = rv = 8\nor rq = rk = rv = ro = 2). We report the best validation performance from each run. The training\nhyperparameters used in our GPT-3 experiments are listed in Table 12.\nE\nCOMBINING LORA WITH PREFIX TUNING\nLoRA can be naturally combined with existing preﬁx-based approaches. In this section, we evaluate"
+  ],
+  "answer": "According to the available information, no relevant information was found.",
+  "refused": true,
+  "latency_s": 3.484,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "A|kw-01": {
+  "config": "A",
+  "id": "kw-01",
+  "type": "keyword",
+  "question": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "query_used": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf"
+  ],
+  "contexts": [
+   "duct attention is identical to our algorithm, except for the scaling factor\nof\n1√dk . Additive attention computes the compatibility function using a feed-forward network with\na single hidden layer. While the two are similar in theoretical complexity, dot-product attention is\nmuch faster and more space-efficient in practice, since it can be implemented using highly optimized\nmatrix multiplication code.\nWhile for small values of dk the two mechanisms perform similarly, additive attention outperforms\ndot product attention without scaling for larger values of dk [3]. We suspect that for large values of",
+   ", values, and output are all vectors. The output is computed as a weighted sum\n3Scaled Dot-Product Attention\nMulti-Head Attention\nFigure 2: (left) Scaled Dot-Product Attention. (right) Multi-Head Attention consists of several\nattention layers running in parallel.\nof the values, where the weight assigned to each value is computed by a compatibility function of the\nquery with the corresponding key.\n3.2.1\nScaled Dot-Product Attention\nWe call our particular attention \"Scaled Dot-Product Attention\" (Figure 2). The input consists of\nqueries and keys of dimension dk, and values of dimension dv. We compute the dot products of the",
+   "without scaling for larger values of dk [3]. We suspect that for large values ofdk, the dot products grow large in magnitude, pushing the softmax function into regions where it has\nextremely small gradients 4. To counteract this effect, we scale the dot products by\n1\n√dk .\n3.2.2\nMulti-Head Attention\nInstead of performing a single attention function with dmodel-dimensional keys, values and queries,\nwe found it beneficial to linearly project the queries, keys and values h times with different, learned\nlinear projections to dk, dk and dv dimensions, respectively. On each of these projected versions of",
+   " of dimension dk, and values of dimension dv. We compute the dot products of thequery with all keys, divide each by √dk, and apply a softmax function to obtain the weights on the\nvalues.\nIn practice, we compute the attention function on a set of queries simultaneously, packed together\ninto a matrix Q. The keys and values are also packed together into matrices K and V . We compute\nthe matrix of outputs as:\nAttention(Q, K, V ) = softmax(QKT\n√dk\n)V\n(1)\nThe two most commonly used attention functions are additive attention [2], and dot-product (multi-\nplicative) attention. Dot-product attention is identical to our algorithm, except for the scaling factor\nof\n1"
+  ],
+  "answer": "The scaling factor in Scaled Dot-Product Attention is \\( \\frac{1}{\\sqrt{d_k}} \\).",
+  "refused": false,
+  "latency_s": 3.484,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "A|sf-01": {
+  "config": "A",
+  "id": "sf-01",
+  "type": "single_fact",
+  "question": "How many parallel attention heads does the base Transformer model use?",
+  "query_used": "How many parallel attention heads does the base Transformer model use?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "04_vision_transformer_vit.pdf",
+   "01_attention_is_all_you_need.pdf"
+  ],
+  "contexts": [
+   "es W Q\ni\n∈Rdmodel×dk, W K\ni\n∈Rdmodel×dk, W V\ni\n∈Rdmodel×dv\nand W O ∈Rhdv×dmodel.In this work we employ h = 8 parallel attention layers, or heads. For each of these we use\ndk = dv = dmodel/h = 64. Due to the reduced dimension of each head, the total computational cost\nis similar to that of single-head attention with full dimensionality.\n3.2.3\nApplications of Attention in our Model\nThe Transformer uses multi-head attention in three different ways:\n• In \"encoder-decoder attention\" layers, the queries come from the previous decoder layer,\nand the memory keys and values come from the output of the encoder. This allows every",
+   "e propose the Transformer, a model architecture eschewing recurrence and insteadrelying entirely on an attention mechanism to draw global dependencies between input and output.\nThe Transformer allows for significantly more parallelization and can reach a new state of the art in\ntranslation quality after being trained for as little as twelve hours on eight P100 GPUs.\n2\nBackground\nThe goal of reducing sequential computation also forms the foundation of the Extended Neural GPU\n[16], ByteNet [18] and ConvS2S [9], all of which use convolutional neural networks as basic building",
+   "ntegrate information globally is indeed used by the model. Other attention headshave consistently small attention distances in the low layers. This highly localized attention is\nless pronounced in hybrid models that apply a ResNet before the Transformer (Figure 7, right),\nsuggesting that it may serve a similar function as early convolutional layers in CNNs. Further, the\nattention distance increases with network depth. Globally, we ﬁnd that the model attends to image\nregions that are semantically relevant for classiﬁcation (Figure 6).\n4.6\nSELF-SUPERVISION\nTransformers show impressive performance on NLP tasks. However, much of their success stems",
+   "fully to English constituency parsing both with\nlarge and limited training data.∗Equal contribution. Listing order is random. Jakob proposed replacing RNNs with self-attention and started\nthe effort to evaluate this idea. Ashish, with Illia, designed and implemented the first Transformer models and\nhas been crucially involved in every aspect of this work. Noam proposed scaled dot-product attention, multi-head\nattention and the parameter-free position representation and became the other person involved in nearly every\ndetail. Niki designed, implemented, tuned and evaluated countless model variants in our original codebase and"
+  ],
+  "answer": "The base Transformer model uses 8 parallel attention heads.",
+  "refused": false,
+  "latency_s": 3.864,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "A|sf-02": {
+  "config": "A",
+  "id": "sf-02",
+  "type": "single_fact",
+  "question": "What BLEU score did its big model reach on the WMT 2014 English-to-German translation task?",
+  "query_used": "What BLEU score did its big model reach on the WMT 2014 English-to-German translation task?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "01_attention_is_all_you_need.pdf"
+  ],
+  "contexts": [
+   " model learns to be more unsure, but improves accuracy and BLEU score.\n6\nResults6.1\nMachine Translation\nOn the WMT 2014 English-to-German translation task, the big transformer model (Transformer (big)\nin Table 2) outperforms the best previously reported models (including ensembles) by more than 2.0\nBLEU, establishing a new state-of-the-art BLEU score of 28.4. The configuration of this model is\nlisted in the bottom line of Table 3. Training took 3.5 days on 8 P100 GPUs. Even our base model\nsurpasses all previously published models and ensembles, at a fraction of the training cost of any of\nthe competitive models.",
+   " superior in quality while being more parallelizable and requiring significantlyless time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-\nto-German translation task, improving over the existing best results, including\nensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task,\nour model establishes a new single-model state-of-the-art BLEU score of 41.8 after\ntraining for 3.5 days on eight GPUs, a small fraction of the training costs of the\nbest models from the literature. We show that the Transformer generalizes well to\nother tasks by applying it successfully to English constituency parsing both with\nlarge and limited training data.",
+   "ecting its strength as an English LM. We report BLEU scores on the WMT’14 Fr↔En,WMT’16 De↔En, and WMT’16 Ro↔En datasets as measured by multi-bleu.perl with XLM’s tokeniza-\ntion in order to compare most closely with prior unsupervised NMT work.\nSacreBLEUf [Pos18] results re-\nported in Appendix H. Underline indicates an unsupervised or few-shot SOTA, bold indicates supervised SOTA\nwith relative conﬁdence.\na[EOAG18] b[DHKH14] c[WXH+18] d[oR16] e[LGG+20] f [SacreBLEU signature:\nBLEU+case.mixed+numrefs.1+smooth.exp+tok.intl+version.1.2.20]\nFigure 3.4: Few-shot translation performance on 6 language pairs as model capacity increases. There is a consistent",
+   " ensembles, at a fraction of the training cost of any of\nthe competitive models.On the WMT 2014 English-to-French translation task, our big model achieves a BLEU score of 41.0,\noutperforming all of the previously published single models, at less than 1/4 the training cost of the\nprevious state-of-the-art model. The Transformer (big) model trained for English-to-French used\ndropout rate Pdrop = 0.1, instead of 0.3.\nFor the base models, we used a single model obtained by averaging the last 5 checkpoints, which\nwere written at 10-minute intervals. For the big models, we averaged the last 20 checkpoints. We"
+  ],
+  "answer": "The big model achieved a BLEU score of 28.4 on the WMT 2014 English-to-German translation task.",
+  "refused": false,
+  "latency_s": 1.087,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "B|kw-01": {
+  "config": "B",
+  "id": "kw-01",
+  "type": "keyword",
+  "question": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "query_used": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf"
+  ],
+  "contexts": [
+   "duct attention is identical to our algorithm, except for the scaling factor\nof\n1√dk . Additive attention computes the compatibility function using a feed-forward network with\na single hidden layer. While the two are similar in theoretical complexity, dot-product attention is\nmuch faster and more space-efficient in practice, since it can be implemented using highly optimized\nmatrix multiplication code.\nWhile for small values of dk the two mechanisms perform similarly, additive attention outperforms\ndot product attention without scaling for larger values of dk [3]. We suspect that for large values of",
+   ", values, and output are all vectors. The output is computed as a weighted sum\n3Scaled Dot-Product Attention\nMulti-Head Attention\nFigure 2: (left) Scaled Dot-Product Attention. (right) Multi-Head Attention consists of several\nattention layers running in parallel.\nof the values, where the weight assigned to each value is computed by a compatibility function of the\nquery with the corresponding key.\n3.2.1\nScaled Dot-Product Attention\nWe call our particular attention \"Scaled Dot-Product Attention\" (Figure 2). The input consists of\nqueries and keys of dimension dk, and values of dimension dv. We compute the dot products of the",
+   " of dimension dk, and values of dimension dv. We compute the dot products of thequery with all keys, divide each by √dk, and apply a softmax function to obtain the weights on the\nvalues.\nIn practice, we compute the attention function on a set of queries simultaneously, packed together\ninto a matrix Q. The keys and values are also packed together into matrices K and V . We compute\nthe matrix of outputs as:\nAttention(Q, K, V ) = softmax(QKT\n√dk\n)V\n(1)\nThe two most commonly used attention functions are additive attention [2], and dot-product (multi-\nplicative) attention. Dot-product attention is identical to our algorithm, except for the scaling factor\nof\n1",
+   "-attention layers in the decoder allow each position in the decoder to attend toall positions in the decoder up to and including that position. We need to prevent leftward\ninformation flow in the decoder to preserve the auto-regressive property. We implement this\ninside of scaled dot-product attention by masking out (setting to −∞) all values in the input\nof the softmax which correspond to illegal connections. See Figure 2.\n3.3\nPosition-wise Feed-Forward Networks\nIn addition to attention sub-layers, each of the layers in our encoder and decoder contains a fully\nconnected feed-forward network, which is applied to each position separately and identically. This"
+  ],
+  "answer": "The scaling factor in Scaled Dot-Product Attention is \\( \\frac{1}{\\sqrt{d_k}} \\).",
+  "refused": false,
+  "latency_s": 0.972,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "B|mh-01": {
+  "config": "B",
+  "id": "mh-01",
+  "type": "multi_hop",
+  "question": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "query_used": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "retrieved_sources": [
+   "07_instructgpt_rlhf.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf"
+  ],
+  "contexts": [
+   "ing generalization to instructions outside of the RLHF ﬁne-\ntuning distribution.In particular, we ﬁnd that InstructGPT shows ability to follow instructions\nin non-English languages, and perform summarization and question-answering for code. This is\n15",
+   " GPT-3 achieves 76% on LAMBADA, a gain of\n8% over the previous state of the art.LAMBADA is also a demonstration of the ﬂexibility of few-shot learning as it provides a way to address a problem that\nclassically occurs with this dataset. Although the completion in LAMBADA is always the last word in a sentence, a\nstandard language model has no way of knowing this detail. It thus assigns probability not only to the correct ending but\nalso to other valid continuations of the paragraph. This problem has been partially addressed in the past with stop-word\nﬁlters [RWC+19] (which ban “continuation” words). The few-shot setting instead allows us to “frame” the task as a",
+   "PL performs slightly worse than LoRA even with more trainable parameters. We at-tribute this to the fact that preﬁx-layer tuning is very sensitive to the choice of learning rate and thus\nmakes the optimization of LoRA weights more difﬁcult in LoRA+PL.\nF\nADDITIONAL EMPIRICAL EXPERIMENTS\nF.1\nADDITIONAL EXPERIMENTS ON GPT-2\nWe also repeat our experiment on DART (Nan et al., 2020) and WebNLG (Gardent et al., 2017)\nfollowing the setup of Li & Liang (2021). The result is shown in Table 13. Similar to our result\non E2E NLG Challenge, reported in Section 5, LoRA performs better than or at least on-par with\npreﬁx-based approaches given the same number of trainable parameters.",
+   "er task to outperform a ﬁne-tuned BERT-Large\non overall SuperGLUE score.\n3.8\nNLINatural Language Inference (NLI) [Fyo00] concerns the ability to understand the relationship between two sentences.\nIn practice, this task is usually structured as a two or three class classiﬁcation problem where the model classiﬁes\n20"
+  ],
+  "answer": "According to the available information, no relevant information was found.",
+  "refused": true,
+  "latency_s": 1.552,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "B|sf-01": {
+  "config": "B",
+  "id": "sf-01",
+  "type": "single_fact",
+  "question": "How many parallel attention heads does the base Transformer model use?",
+  "query_used": "How many parallel attention heads does the base Transformer model use?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "10_mamba_linear_time_sequence_modeling.pdf"
+  ],
+  "contexts": [
+   "es W Q\ni\n∈Rdmodel×dk, W K\ni\n∈Rdmodel×dk, W V\ni\n∈Rdmodel×dv\nand W O ∈Rhdv×dmodel.In this work we employ h = 8 parallel attention layers, or heads. For each of these we use\ndk = dv = dmodel/h = 64. Due to the reduced dimension of each head, the total computational cost\nis similar to that of single-head attention with full dimensionality.\n3.2.3\nApplications of Attention in our Model\nThe Transformer uses multi-head attention in three different ways:\n• In \"encoder-decoder attention\" layers, the queries come from the previous decoder layer,\nand the memory keys and values come from the output of the encoder. This allows every",
+   "ation\nshould\nbe\njust\n-\nthis\nis\nwhat\nwe\nare\nmissing\n,\nin\nmy\nopinion\n.\n<EOS>\n<pad>Figure 5: Many of the attention heads exhibit behaviour that seems related to the structure of the\nsentence. We give two such examples above, from two different heads from the encoder self-attention\nat layer 5 of 6. The heads clearly learned to perform different tasks.\n15",
+   "e propose the Transformer, a model architecture eschewing recurrence and insteadrelying entirely on an attention mechanism to draw global dependencies between input and output.\nThe Transformer allows for significantly more parallelization and can reach a new state of the art in\ntranslation quality after being trained for as little as twelve hours on eight P100 GPUs.\n2\nBackground\nThe goal of reducing sequential computation also forms the foundation of the Extended Neural GPU\n[16], ByteNet [18] and ConvS2S [9], all of which use convolutional neural networks as basic building",
+   "a+ but with the Hyena convolution kernel swapped out for S4D convolution kernel.• H3++: The same as H3+, but with a linear attention head dimension of 8. This increases computation inside the SSM\nrecurrence but does not increase parameters.\nOur general convention is that “Model+” represents the base model with the improved training recipe, and “Model++” also\nallows for architectural changes.\nFigure 9 (Right) shows that\n• A large improvement is achieved by the improved training recipe, which was used for many of the models in the main\nFigure 4 (RetNet, H3++, Transformer++, Mamba)."
+  ],
+  "answer": "The base Transformer model uses 8 parallel attention heads.",
+  "refused": false,
+  "latency_s": 1.685,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "B|un-01": {
+  "config": "B",
+  "id": "un-01",
+  "type": "unanswerable",
+  "question": "How many parameters does GPT-4 have?",
+  "query_used": "How many parameters does GPT-4 have?",
+  "retrieved_sources": [
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "08_chain_of_thought_prompting.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "08_chain_of_thought_prompting.pdf"
+  ],
+  "contexts": [
+   "\n6\n3\n2\n1.0\nGPT-3 Medium\n7.42E+00\n6.41E+20\n356\n300\n6\n3\n2\n1.0\nGPT-3 Large\n1.58E+011.37E+21\n760\n300\n6\n3\n2\n1.0\nGPT-3 XL\n2.75E+01\n2.38E+21\n1,320\n300\n6\n3\n2\n1.0\nGPT-3 2.7B\n5.52E+01\n4.77E+21\n2,650\n300\n6\n3\n2\n1.0\nGPT-3 6.7B\n1.39E+02\n1.20E+22\n6,660\n300\n6\n3\n2\n1.0\nGPT-3 13B\n2.68E+02\n2.31E+22\n12,850\n300\n6\n3\n2\n1.0\nGPT-3 175B\n3.64E+03\n3.14E+23\n174,600\n300\n6\n3\n2\n1.0\nTable D.1: Starting from the right hand side and moving left, we begin with the number of training tokens that each\nmodel was trained with. Next we note that since T5 uses an encoder-decoder model, only half of the parameters are",
+   "tuned GPT-3 with a veriﬁer.\nA: The cafeteria had 23 apples originally. They used20 to make lunch. So they had 23 - 20 = 3. They \nbought 6 more apples, so they have 3 + 6 = 9. The \nanswer is 9.\nChain-of-Thought Prompting\nQ: Roger has 5 tennis balls. He buys 2 more cans of \ntennis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?\nA: The answer is 11.\nQ: The cafeteria had 23 apples. If they used 20 to \nmake lunch and bought 6 more, how many apples \ndo they have?\nA: The answer is 27.\nStandard Prompting\nQ: Roger has 5 tennis balls. He buys 2 more cans of \ntennis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?",
+   "rain 8 different sizes of model, ranging over three orders of magnitude from 125million parameters to 175 billion parameters, with the last being the model we call GPT-3. Previous work [KMH+20]\nsuggests that with enough training data, scaling of validation loss should be approximately a smooth power law as a\nfunction of size; training models of many different sizes allows us to test this hypothesis both for validation loss and for\ndownstream language tasks.\nTable 2.1 shows the sizes and architectures of our 8 models. Here nparams is the total number of trainable parameters,",
+   "nis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?A: Roger started with 5 balls. 2 cans of 3 tennis balls \neach is 6 tennis balls. 5 + 6 = 11. The answer is 11.\nQ: The cafeteria had 23 apples. If they used 20 to \nmake lunch and bought 6 more, how many apples \ndo they have?\nModel Input\nModel Output\nModel Output\nModel Input\nFigure 1: Chain-of-thought prompting enables large language models to tackle complex arithmetic,\ncommonsense, and symbolic reasoning tasks. Chain-of-thought reasoning processes are highlighted.\n36th Conference on Neural Information Processing Systems (NeurIPS 2022).\narXiv:2201.11903v6  [cs.CL]  10 Jan 2023"
+  ],
+  "answer": "According to the available information, no relevant information was found.",
+  "refused": true,
+  "latency_s": 0.929,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "B|sf-02": {
+  "config": "B",
+  "id": "sf-02",
+  "type": "single_fact",
+  "question": "What BLEU score did its big model reach on the WMT 2014 English-to-German translation task?",
+  "query_used": "What BLEU score did its big model reach on the WMT 2014 English-to-German translation task?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf"
+  ],
+  "contexts": [
+   " model learns to be more unsure, but improves accuracy and BLEU score.\n6\nResults6.1\nMachine Translation\nOn the WMT 2014 English-to-German translation task, the big transformer model (Transformer (big)\nin Table 2) outperforms the best previously reported models (including ensembles) by more than 2.0\nBLEU, establishing a new state-of-the-art BLEU score of 28.4. The configuration of this model is\nlisted in the bottom line of Table 3. Training took 3.5 days on 8 P100 GPUs. Even our base model\nsurpasses all previously published models and ensembles, at a fraction of the training cost of any of\nthe competitive models.",
+   " superior in quality while being more parallelizable and requiring significantlyless time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-\nto-German translation task, improving over the existing best results, including\nensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task,\nour model establishes a new single-model state-of-the-art BLEU score of 41.8 after\ntraining for 3.5 days on eight GPUs, a small fraction of the training costs of the\nbest models from the literature. We show that the Transformer generalizes well to\nother tasks by applying it successfully to English constituency parsing both with\nlarge and limited training data.",
+   " ensembles, at a fraction of the training cost of any of\nthe competitive models.On the WMT 2014 English-to-French translation task, our big model achieves a BLEU score of 41.0,\noutperforming all of the previously published single models, at less than 1/4 the training cost of the\nprevious state-of-the-art model. The Transformer (big) model trained for English-to-French used\ndropout rate Pdrop = 0.1, instead of 0.3.\nFor the base models, we used a single model obtained by averaging the last 5 checkpoints, which\nwere written at 10-minute intervals. For the big models, we averaged the last 20 checkpoints. We",
+   "ecting its strength as an English LM. We report BLEU scores on the WMT’14 Fr↔En,WMT’16 De↔En, and WMT’16 Ro↔En datasets as measured by multi-bleu.perl with XLM’s tokeniza-\ntion in order to compare most closely with prior unsupervised NMT work.\nSacreBLEUf [Pos18] results re-\nported in Appendix H. Underline indicates an unsupervised or few-shot SOTA, bold indicates supervised SOTA\nwith relative conﬁdence.\na[EOAG18] b[DHKH14] c[WXH+18] d[oR16] e[LGG+20] f [SacreBLEU signature:\nBLEU+case.mixed+numrefs.1+smooth.exp+tok.intl+version.1.2.20]\nFigure 3.4: Few-shot translation performance on 6 language pairs as model capacity increases. There is a consistent"
+  ],
+  "answer": "The big transformer model achieved a BLEU score of 28.4 on the WMT 2014 English-to-German translation task.",
+  "refused": false,
+  "latency_s": 1.111,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "C|sf-01": {
+  "config": "C",
+  "id": "sf-01",
+  "type": "single_fact",
+  "question": "How many parallel attention heads does the base Transformer model use?",
+  "query_used": "How many parallel attention heads does the base Transformer model use?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "10_mamba_linear_time_sequence_modeling.pdf"
+  ],
+  "contexts": [
+   "es W Q\ni\n∈Rdmodel×dk, W K\ni\n∈Rdmodel×dk, W V\ni\n∈Rdmodel×dv\nand W O ∈Rhdv×dmodel.In this work we employ h = 8 parallel attention layers, or heads. For each of these we use\ndk = dv = dmodel/h = 64. Due to the reduced dimension of each head, the total computational cost\nis similar to that of single-head attention with full dimensionality.\n3.2.3\nApplications of Attention in our Model\nThe Transformer uses multi-head attention in three different ways:\n• In \"encoder-decoder attention\" layers, the queries come from the previous decoder layer,\nand the memory keys and values come from the output of the encoder. This allows every",
+   "ation\nshould\nbe\njust\n-\nthis\nis\nwhat\nwe\nare\nmissing\n,\nin\nmy\nopinion\n.\n<EOS>\n<pad>Figure 5: Many of the attention heads exhibit behaviour that seems related to the structure of the\nsentence. We give two such examples above, from two different heads from the encoder self-attention\nat layer 5 of 6. The heads clearly learned to perform different tasks.\n15",
+   "e propose the Transformer, a model architecture eschewing recurrence and insteadrelying entirely on an attention mechanism to draw global dependencies between input and output.\nThe Transformer allows for significantly more parallelization and can reach a new state of the art in\ntranslation quality after being trained for as little as twelve hours on eight P100 GPUs.\n2\nBackground\nThe goal of reducing sequential computation also forms the foundation of the Extended Neural GPU\n[16], ByteNet [18] and ConvS2S [9], all of which use convolutional neural networks as basic building",
+   "a+ but with the Hyena convolution kernel swapped out for S4D convolution kernel.• H3++: The same as H3+, but with a linear attention head dimension of 8. This increases computation inside the SSM\nrecurrence but does not increase parameters.\nOur general convention is that “Model+” represents the base model with the improved training recipe, and “Model++” also\nallows for architectural changes.\nFigure 9 (Right) shows that\n• A large improvement is achieved by the improved training recipe, which was used for many of the models in the main\nFigure 4 (RetNet, H3++, Transformer++, Mamba)."
+  ],
+  "answer": "The base Transformer model uses 8 parallel attention heads.",
+  "refused": false,
+  "latency_s": 0.964,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "C|mh-01": {
+  "config": "C",
+  "id": "mh-01",
+  "type": "multi_hop",
+  "question": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "query_used": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "retrieved_sources": [
+   "07_instructgpt_rlhf.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf"
+  ],
+  "contexts": [
+   "ing generalization to instructions outside of the RLHF ﬁne-\ntuning distribution.In particular, we ﬁnd that InstructGPT shows ability to follow instructions\nin non-English languages, and perform summarization and question-answering for code. This is\n15",
+   " GPT-3 achieves 76% on LAMBADA, a gain of\n8% over the previous state of the art.LAMBADA is also a demonstration of the ﬂexibility of few-shot learning as it provides a way to address a problem that\nclassically occurs with this dataset. Although the completion in LAMBADA is always the last word in a sentence, a\nstandard language model has no way of knowing this detail. It thus assigns probability not only to the correct ending but\nalso to other valid continuations of the paragraph. This problem has been partially addressed in the past with stop-word\nﬁlters [RWC+19] (which ban “continuation” words). The few-shot setting instead allows us to “frame” the task as a",
+   "PL performs slightly worse than LoRA even with more trainable parameters. We at-tribute this to the fact that preﬁx-layer tuning is very sensitive to the choice of learning rate and thus\nmakes the optimization of LoRA weights more difﬁcult in LoRA+PL.\nF\nADDITIONAL EMPIRICAL EXPERIMENTS\nF.1\nADDITIONAL EXPERIMENTS ON GPT-2\nWe also repeat our experiment on DART (Nan et al., 2020) and WebNLG (Gardent et al., 2017)\nfollowing the setup of Li & Liang (2021). The result is shown in Table 13. Similar to our result\non E2E NLG Challenge, reported in Section 5, LoRA performs better than or at least on-par with\npreﬁx-based approaches given the same number of trainable parameters.",
+   "er task to outperform a ﬁne-tuned BERT-Large\non overall SuperGLUE score.\n3.8\nNLINatural Language Inference (NLI) [Fyo00] concerns the ability to understand the relationship between two sentences.\nIn practice, this task is usually structured as a two or three class classiﬁcation problem where the model classiﬁes\n20"
+  ],
+  "answer": "According to the available information, no relevant information was found.",
+  "refused": true,
+  "latency_s": 0.909,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "C|kw-01": {
+  "config": "C",
+  "id": "kw-01",
+  "type": "keyword",
+  "question": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "query_used": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf"
+  ],
+  "contexts": [
+   "duct attention is identical to our algorithm, except for the scaling factor\nof\n1√dk . Additive attention computes the compatibility function using a feed-forward network with\na single hidden layer. While the two are similar in theoretical complexity, dot-product attention is\nmuch faster and more space-efficient in practice, since it can be implemented using highly optimized\nmatrix multiplication code.\nWhile for small values of dk the two mechanisms perform similarly, additive attention outperforms\ndot product attention without scaling for larger values of dk [3]. We suspect that for large values of",
+   ", values, and output are all vectors. The output is computed as a weighted sum\n3Scaled Dot-Product Attention\nMulti-Head Attention\nFigure 2: (left) Scaled Dot-Product Attention. (right) Multi-Head Attention consists of several\nattention layers running in parallel.\nof the values, where the weight assigned to each value is computed by a compatibility function of the\nquery with the corresponding key.\n3.2.1\nScaled Dot-Product Attention\nWe call our particular attention \"Scaled Dot-Product Attention\" (Figure 2). The input consists of\nqueries and keys of dimension dk, and values of dimension dv. We compute the dot products of the",
+   " of dimension dk, and values of dimension dv. We compute the dot products of thequery with all keys, divide each by √dk, and apply a softmax function to obtain the weights on the\nvalues.\nIn practice, we compute the attention function on a set of queries simultaneously, packed together\ninto a matrix Q. The keys and values are also packed together into matrices K and V . We compute\nthe matrix of outputs as:\nAttention(Q, K, V ) = softmax(QKT\n√dk\n)V\n(1)\nThe two most commonly used attention functions are additive attention [2], and dot-product (multi-\nplicative) attention. Dot-product attention is identical to our algorithm, except for the scaling factor\nof\n1",
+   "-attention layers in the decoder allow each position in the decoder to attend toall positions in the decoder up to and including that position. We need to prevent leftward\ninformation flow in the decoder to preserve the auto-regressive property. We implement this\ninside of scaled dot-product attention by masking out (setting to −∞) all values in the input\nof the softmax which correspond to illegal connections. See Figure 2.\n3.3\nPosition-wise Feed-Forward Networks\nIn addition to attention sub-layers, each of the layers in our encoder and decoder contains a fully\nconnected feed-forward network, which is applied to each position separately and identically. This"
+  ],
+  "answer": "The scaling factor in Scaled Dot-Product Attention is \\( \\frac{1}{\\sqrt{d_k}} \\).",
+  "refused": false,
+  "latency_s": 1.163,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "C|un-01": {
+  "config": "C",
+  "id": "un-01",
+  "type": "unanswerable",
+  "question": "How many parameters does GPT-4 have?",
+  "query_used": "How many parameters does GPT-4 have?",
+  "retrieved_sources": [
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "08_chain_of_thought_prompting.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "08_chain_of_thought_prompting.pdf"
+  ],
+  "contexts": [
+   "\n6\n3\n2\n1.0\nGPT-3 Medium\n7.42E+00\n6.41E+20\n356\n300\n6\n3\n2\n1.0\nGPT-3 Large\n1.58E+011.37E+21\n760\n300\n6\n3\n2\n1.0\nGPT-3 XL\n2.75E+01\n2.38E+21\n1,320\n300\n6\n3\n2\n1.0\nGPT-3 2.7B\n5.52E+01\n4.77E+21\n2,650\n300\n6\n3\n2\n1.0\nGPT-3 6.7B\n1.39E+02\n1.20E+22\n6,660\n300\n6\n3\n2\n1.0\nGPT-3 13B\n2.68E+02\n2.31E+22\n12,850\n300\n6\n3\n2\n1.0\nGPT-3 175B\n3.64E+03\n3.14E+23\n174,600\n300\n6\n3\n2\n1.0\nTable D.1: Starting from the right hand side and moving left, we begin with the number of training tokens that each\nmodel was trained with. Next we note that since T5 uses an encoder-decoder model, only half of the parameters are",
+   "tuned GPT-3 with a veriﬁer.\nA: The cafeteria had 23 apples originally. They used20 to make lunch. So they had 23 - 20 = 3. They \nbought 6 more apples, so they have 3 + 6 = 9. The \nanswer is 9.\nChain-of-Thought Prompting\nQ: Roger has 5 tennis balls. He buys 2 more cans of \ntennis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?\nA: The answer is 11.\nQ: The cafeteria had 23 apples. If they used 20 to \nmake lunch and bought 6 more, how many apples \ndo they have?\nA: The answer is 27.\nStandard Prompting\nQ: Roger has 5 tennis balls. He buys 2 more cans of \ntennis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?",
+   "rain 8 different sizes of model, ranging over three orders of magnitude from 125million parameters to 175 billion parameters, with the last being the model we call GPT-3. Previous work [KMH+20]\nsuggests that with enough training data, scaling of validation loss should be approximately a smooth power law as a\nfunction of size; training models of many different sizes allows us to test this hypothesis both for validation loss and for\ndownstream language tasks.\nTable 2.1 shows the sizes and architectures of our 8 models. Here nparams is the total number of trainable parameters,",
+   "nis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?A: Roger started with 5 balls. 2 cans of 3 tennis balls \neach is 6 tennis balls. 5 + 6 = 11. The answer is 11.\nQ: The cafeteria had 23 apples. If they used 20 to \nmake lunch and bought 6 more, how many apples \ndo they have?\nModel Input\nModel Output\nModel Output\nModel Input\nFigure 1: Chain-of-thought prompting enables large language models to tackle complex arithmetic,\ncommonsense, and symbolic reasoning tasks. Chain-of-thought reasoning processes are highlighted.\n36th Conference on Neural Information Processing Systems (NeurIPS 2022).\narXiv:2201.11903v6  [cs.CL]  10 Jan 2023"
+  ],
+  "answer": "According to the available information, no relevant information was found.",
+  "refused": true,
+  "latency_s": 0.941,
+  "llm_calls": 1,
+  "scores": {}
+ },
+ "D|sf-01": {
+  "config": "D",
+  "id": "sf-01",
+  "type": "single_fact",
+  "question": "How many parallel attention heads does the base Transformer model use?",
+  "query_used": "How many parallel attention heads does the base Transformer model use?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "04_vision_transformer_vit.pdf",
+   "04_vision_transformer_vit.pdf"
+  ],
+  "contexts": [
+   "es W Q\ni\n∈Rdmodel×dk, W K\ni\n∈Rdmodel×dk, W V\ni\n∈Rdmodel×dv\nand W O ∈Rhdv×dmodel.In this work we employ h = 8 parallel attention layers, or heads. For each of these we use\ndk = dv = dmodel/h = 64. Due to the reduced dimension of each head, the total computational cost\nis similar to that of single-head attention with full dimensionality.\n3.2.3\nApplications of Attention in our Model\nThe Transformer uses multi-head attention in three different ways:\n• In \"encoder-decoder attention\" layers, the queries come from the previous decoder layer,\nand the memory keys and values come from the output of the encoder. This allows every",
+   "ation\nshould\nbe\njust\n-\nthis\nis\nwhat\nwe\nare\nmissing\n,\nin\nmy\nopinion\n.\n<EOS>\n<pad>Figure 5: Many of the attention heads exhibit behaviour that seems related to the structure of the\nsentence. We give two such examples above, from two different heads from the encoder self-attention\nat layer 5 of 6. The heads clearly learned to perform different tasks.\n15",
+   "ntegrate information globally is indeed used by the model. Other attention headshave consistently small attention distances in the low layers. This highly localized attention is\nless pronounced in hybrid models that apply a ResNet before the Transformer (Figure 7, right),\nsuggesting that it may serve a similar function as early convolutional layers in CNNs. Further, the\nattention distance increases with network depth. Globally, we ﬁnd that the model attends to image\nregions that are semantically relevant for classiﬁcation (Figure 6).\n4.6\nSELF-SUPERVISION\nTransformers show impressive performance on NLP tasks. However, much of their success stems",
+   "ear the query location. As depth increases, attention distance increases for allheads. In the second half of the network, most heads attend widely across tokens.\nD.8\nATTENTION MAPS\nTo compute maps of the attention from the output token to the input space (Figures 6 and 14), we\nused Attention Rollout (Abnar & Zuidema, 2020). Brieﬂy, we averaged attention weights of ViT-\nL/16 across all heads and then recursively multiplied the weight matrices of all layers. This accounts\nfor the mixing of attention across tokens through all layers.\nD.9\nOBJECTNET RESULTS\nWe also evaluate our ﬂagship ViT-H/14 model on the ObjectNet benchmark following the evaluation"
+  ],
+  "answer": "The base Transformer model uses 8 parallel attention heads.",
+  "refused": false,
+  "latency_s": 1.908,
+  "llm_calls": 3,
+  "scores": {}
+ },
+ "C|sf-02": {
+  "config": "C",
+  "id": "sf-02",
+  "type": "single_fact",
+  "question": "What BLEU score did its big model reach on the WMT 2014 English-to-German translation task?",
+  "query_used": "What BLEU score did the big Transformer model achieve on the WMT 2014 English-to-German translation task?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf"
+  ],
+  "contexts": [
+   " model learns to be more unsure, but improves accuracy and BLEU score.\n6\nResults6.1\nMachine Translation\nOn the WMT 2014 English-to-German translation task, the big transformer model (Transformer (big)\nin Table 2) outperforms the best previously reported models (including ensembles) by more than 2.0\nBLEU, establishing a new state-of-the-art BLEU score of 28.4. The configuration of this model is\nlisted in the bottom line of Table 3. Training took 3.5 days on 8 P100 GPUs. Even our base model\nsurpasses all previously published models and ensembles, at a fraction of the training cost of any of\nthe competitive models.",
+   " superior in quality while being more parallelizable and requiring significantlyless time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-\nto-German translation task, improving over the existing best results, including\nensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task,\nour model establishes a new single-model state-of-the-art BLEU score of 41.8 after\ntraining for 3.5 days on eight GPUs, a small fraction of the training costs of the\nbest models from the literature. We show that the Transformer generalizes well to\nother tasks by applying it successfully to English constituency parsing both with\nlarge and limited training data.",
+   " ensembles, at a fraction of the training cost of any of\nthe competitive models.On the WMT 2014 English-to-French translation task, our big model achieves a BLEU score of 41.0,\noutperforming all of the previously published single models, at less than 1/4 the training cost of the\nprevious state-of-the-art model. The Transformer (big) model trained for English-to-French used\ndropout rate Pdrop = 0.1, instead of 0.3.\nFor the base models, we used a single model obtained by averaging the last 5 checkpoints, which\nwere written at 10-minute intervals. For the big models, we averaged the last 20 checkpoints. We",
+   " reported models with the exception of the\nRecurrent Neural Network Grammar [8].In contrast to RNN sequence-to-sequence models [37], the Transformer outperforms the Berkeley-\nParser [29] even when training only on the WSJ training set of 40K sentences.\n7\nConclusion\nIn this work, we presented the Transformer, the first sequence transduction model based entirely on\nattention, replacing the recurrent layers most commonly used in encoder-decoder architectures with\nmulti-headed self-attention.\nFor translation tasks, the Transformer can be trained significantly faster than architectures based\non recurrent or convolutional layers. On both WMT 2014 English-to-German and WMT 2014"
+  ],
+  "answer": "The big Transformer model achieved a BLEU score of 28.4 on the WMT 2014 English-to-German translation task.",
+  "refused": false,
+  "latency_s": 1.994,
+  "llm_calls": 2,
+  "scores": {}
+ },
+ "D|kw-01": {
+  "config": "D",
+  "id": "kw-01",
+  "type": "keyword",
+  "question": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "query_used": "What is the scaling factor in Scaled Dot-Product Attention?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf"
+  ],
+  "contexts": [
+   "duct attention is identical to our algorithm, except for the scaling factor\nof\n1√dk . Additive attention computes the compatibility function using a feed-forward network with\na single hidden layer. While the two are similar in theoretical complexity, dot-product attention is\nmuch faster and more space-efficient in practice, since it can be implemented using highly optimized\nmatrix multiplication code.\nWhile for small values of dk the two mechanisms perform similarly, additive attention outperforms\ndot product attention without scaling for larger values of dk [3]. We suspect that for large values of",
+   ", values, and output are all vectors. The output is computed as a weighted sum\n3Scaled Dot-Product Attention\nMulti-Head Attention\nFigure 2: (left) Scaled Dot-Product Attention. (right) Multi-Head Attention consists of several\nattention layers running in parallel.\nof the values, where the weight assigned to each value is computed by a compatibility function of the\nquery with the corresponding key.\n3.2.1\nScaled Dot-Product Attention\nWe call our particular attention \"Scaled Dot-Product Attention\" (Figure 2). The input consists of\nqueries and keys of dimension dk, and values of dimension dv. We compute the dot products of the",
+   " of dimension dk, and values of dimension dv. We compute the dot products of thequery with all keys, divide each by √dk, and apply a softmax function to obtain the weights on the\nvalues.\nIn practice, we compute the attention function on a set of queries simultaneously, packed together\ninto a matrix Q. The keys and values are also packed together into matrices K and V . We compute\nthe matrix of outputs as:\nAttention(Q, K, V ) = softmax(QKT\n√dk\n)V\n(1)\nThe two most commonly used attention functions are additive attention [2], and dot-product (multi-\nplicative) attention. Dot-product attention is identical to our algorithm, except for the scaling factor\nof\n1",
+   "-attention layers in the decoder allow each position in the decoder to attend toall positions in the decoder up to and including that position. We need to prevent leftward\ninformation flow in the decoder to preserve the auto-regressive property. We implement this\ninside of scaled dot-product attention by masking out (setting to −∞) all values in the input\nof the softmax which correspond to illegal connections. See Figure 2.\n3.3\nPosition-wise Feed-Forward Networks\nIn addition to attention sub-layers, each of the layers in our encoder and decoder contains a fully\nconnected feed-forward network, which is applied to each position separately and identically. This",
+   "without scaling for larger values of dk [3]. We suspect that for large values ofdk, the dot products grow large in magnitude, pushing the softmax function into regions where it has\nextremely small gradients 4. To counteract this effect, we scale the dot products by\n1\n√dk .\n3.2.2\nMulti-Head Attention\nInstead of performing a single attention function with dmodel-dimensional keys, values and queries,\nwe found it beneficial to linearly project the queries, keys and values h times with different, learned\nlinear projections to dk, dk and dv dimensions, respectively. On each of these projected versions of"
+  ],
+  "answer": "The scaling factor in Scaled Dot-Product Attention is \\( \\frac{1}{\\sqrt{d_k}} \\).",
+  "refused": false,
+  "latency_s": 2.816,
+  "llm_calls": 3,
+  "scores": {}
+ },
+ "D|sf-02": {
+  "config": "D",
+  "id": "sf-02",
+  "type": "single_fact",
+  "question": "What BLEU score did its big model reach on the WMT 2014 English-to-German translation task?",
+  "query_used": "What BLEU score did its big model reach on the WMT 2014 English-to-German translation task?",
+  "retrieved_sources": [
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "01_attention_is_all_you_need.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf"
+  ],
+  "contexts": [
+   " model learns to be more unsure, but improves accuracy and BLEU score.\n6\nResults6.1\nMachine Translation\nOn the WMT 2014 English-to-German translation task, the big transformer model (Transformer (big)\nin Table 2) outperforms the best previously reported models (including ensembles) by more than 2.0\nBLEU, establishing a new state-of-the-art BLEU score of 28.4. The configuration of this model is\nlisted in the bottom line of Table 3. Training took 3.5 days on 8 P100 GPUs. Even our base model\nsurpasses all previously published models and ensembles, at a fraction of the training cost of any of\nthe competitive models.",
+   " ensembles, at a fraction of the training cost of any of\nthe competitive models.On the WMT 2014 English-to-French translation task, our big model achieves a BLEU score of 41.0,\noutperforming all of the previously published single models, at less than 1/4 the training cost of the\nprevious state-of-the-art model. The Transformer (big) model trained for English-to-French used\ndropout rate Pdrop = 0.1, instead of 0.3.\nFor the base models, we used a single model obtained by averaging the last 5 checkpoints, which\nwere written at 10-minute intervals. For the big models, we averaged the last 20 checkpoints. We",
+   " superior in quality while being more parallelizable and requiring significantlyless time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-\nto-German translation task, improving over the existing best results, including\nensembles, by over 2 BLEU. On the WMT 2014 English-to-French translation task,\nour model establishes a new single-model state-of-the-art BLEU score of 41.8 after\ntraining for 3.5 days on eight GPUs, a small fraction of the training costs of the\nbest models from the literature. We show that the Transformer generalizes well to\nother tasks by applying it successfully to English constituency parsing both with\nlarge and limited training data.",
+   "ecting its strength as an English LM. We report BLEU scores on the WMT’14 Fr↔En,WMT’16 De↔En, and WMT’16 Ro↔En datasets as measured by multi-bleu.perl with XLM’s tokeniza-\ntion in order to compare most closely with prior unsupervised NMT work.\nSacreBLEUf [Pos18] results re-\nported in Appendix H. Underline indicates an unsupervised or few-shot SOTA, bold indicates supervised SOTA\nwith relative conﬁdence.\na[EOAG18] b[DHKH14] c[WXH+18] d[oR16] e[LGG+20] f [SacreBLEU signature:\nBLEU+case.mixed+numrefs.1+smooth.exp+tok.intl+version.1.2.20]\nFigure 3.4: Few-shot translation performance on 6 language pairs as model capacity increases. There is a consistent"
+  ],
+  "answer": "The big transformer model achieved a BLEU score of 28.4 on the WMT 2014 English-to-German translation task.",
+  "refused": false,
+  "latency_s": 2.41,
+  "llm_calls": 3,
+  "scores": {}
+ },
+ "D|un-01": {
+  "config": "D",
+  "id": "un-01",
+  "type": "unanswerable",
+  "question": "How many parameters does GPT-4 have?",
+  "query_used": "How many parameters does GPT-4 have?",
+  "retrieved_sources": [
+   "07_instructgpt_rlhf.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "08_chain_of_thought_prompting.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "10_mamba_linear_time_sequence_modeling.pdf",
+   "10_mamba_linear_time_sequence_modeling.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "08_chain_of_thought_prompting.pdf",
+   "07_instructgpt_rlhf.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "09_llama_open_and_efficient_foundation_language_models.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "07_instructgpt_rlhf.pdf"
+  ],
+  "contexts": [
+   "t is your age?\n18-24\n26.3%\n25-34\n47.4%\n35-44\n10.5%\n45-54\n10.5%\n55-64\n5.3%\n65+\n0%What is your highest attained level of education?\nLess than high school degree\n0%\nHigh school degree\n10.5%\nUndergraduate degree\n52.6%\nMaster’s degree\n36.8%\nDoctorate degree\n0%\nC\nAdditional model details\nAll model architectures use the GPT-3 architecture (Brown et al., 2020). For the reward models and\nvalue functions, the unembedding layer of the original model is replaced with a projection layer\nto output a scalar value. All models use fp16 weights and activations, with fp32 master copies of\nweights. The same byte pair encodings as in Brown et al. (2020) are used for all models. All our",
+   "\n6\n3\n2\n1.0\nGPT-3 Medium\n7.42E+00\n6.41E+20\n356\n300\n6\n3\n2\n1.0\nGPT-3 Large\n1.58E+011.37E+21\n760\n300\n6\n3\n2\n1.0\nGPT-3 XL\n2.75E+01\n2.38E+21\n1,320\n300\n6\n3\n2\n1.0\nGPT-3 2.7B\n5.52E+01\n4.77E+21\n2,650\n300\n6\n3\n2\n1.0\nGPT-3 6.7B\n1.39E+02\n1.20E+22\n6,660\n300\n6\n3\n2\n1.0\nGPT-3 13B\n2.68E+02\n2.31E+22\n12,850\n300\n6\n3\n2\n1.0\nGPT-3 175B\n3.64E+03\n3.14E+23\n174,600\n300\n6\n3\n2\n1.0\nTable D.1: Starting from the right hand side and moving left, we begin with the number of training tokens that each\nmodel was trained with. Next we note that since T5 uses an encoder-decoder model, only half of the parameters are",
+   "tuned GPT-3 with a veriﬁer.\nA: The cafeteria had 23 apples originally. They used20 to make lunch. So they had 23 - 20 = 3. They \nbought 6 more apples, so they have 3 + 6 = 9. The \nanswer is 9.\nChain-of-Thought Prompting\nQ: Roger has 5 tennis balls. He buys 2 more cans of \ntennis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?\nA: The answer is 11.\nQ: The cafeteria had 23 apples. If they used 20 to \nmake lunch and bought 6 more, how many apples \ndo they have?\nA: The answer is 27.\nStandard Prompting\nQ: Roger has 5 tennis balls. He buys 2 more cans of \ntennis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?",
+   "ork has focused on increasing parameter count but not computation, as a means ofincreasing models’ capacity to store information without increased computational cost. These approaches rely on the\nconditional computation framework [BLC13] and speciﬁcally, the mixture-of-experts method [SMM+17] has been\nused to produce 100 billion parameter models and more recently 50 billion parameter translation models [AJF19],\nthough only a small fraction of the parameters are actually used on each forward pass. A third approach increases\ncomputation without increasing parameters; examples of this approach include adaptive computation time [Gra16] and",
+   "ed by successively halving this and rounding up to the nearest multiple of 2048.Table 14 lists the specifications used in Figure 7. Beyond the varying batch sizes, the number of valid segments in the\ntraining set varied between different sequence lengths (e.g. the number of training steps per epoch was not constant for\ndifferent points in the graph), which may have contributed to kinks in the scaling curves.\nTraining.\nModels were trained for 200𝐾training steps with a maximum learning rate of 0.002, 20𝐾(10%) warmup steps,\nand weight decay 0.1 (similar to our general pretraining recipe across domains).\nAdditional Ablations: SSM Parameterizations.",
+   "e similar, contrary to the findings in Poli et al. (2023).\n4.2\nLanguage ModelingWe evaluate the Mamba architecture on standard autoregressive language modeling against other architectures, on both\npretraining metrics (perplexity) and zero-shot evaluations. We set the model sizes (depth and width) to mirror GPT3\nspecifications. We use the Pile dataset (L. Gao, Biderman, et al. 2020), and follow the training recipe described in Brown\net al. (2020). All training details are in Appendix E.2.\n4.2.1\nScaling Laws\nFor baselines, we compare against the standard Transformer architecture (GPT3 architecture), as well as the strongest",
+   "rain 8 different sizes of model, ranging over three orders of magnitude from 125million parameters to 175 billion parameters, with the last being the model we call GPT-3. Previous work [KMH+20]\nsuggests that with enough training data, scaling of validation loss should be approximately a smooth power law as a\nfunction of size; training models of many different sizes allows us to test this hypothesis both for validation loss and for\ndownstream language tasks.\nTable 2.1 shows the sizes and architectures of our 8 models. Here nparams is the total number of trainable parameters,",
+   "nis balls. Each can has 3 tennis balls. How many \ntennis balls does he have now?A: Roger started with 5 balls. 2 cans of 3 tennis balls \neach is 6 tennis balls. 5 + 6 = 11. The answer is 11.\nQ: The cafeteria had 23 apples. If they used 20 to \nmake lunch and bought 6 more, how many apples \ndo they have?\nModel Input\nModel Output\nModel Output\nModel Input\nFigure 1: Chain-of-thought prompting enables large language models to tackle complex arithmetic,\ncommonsense, and symbolic reasoning tasks. Chain-of-thought reasoning processes are highlighted.\n36th Conference on Neural Information Processing Systems (NeurIPS 2022).\narXiv:2201.11903v6  [cs.CL]  10 Jan 2023",
+   " size of 64, since it has better GPU utilization than a minibatch size of 32.\n60F\nModel samples\nIn this section, we provide some additional samples from both the 175B GPT-3 and 175B InstructGPT\n(PPO-ptx) models. We sample at T = 1 for InstructGPT, and use T = 0.7 for GPT-3, since GPT-3\nperforms poorly at high temperatures (this slightly disadvantages InstructGPT).\nIn Figure 42, we show the full French sample from Figure 8, illustrating that our model is sometimes\nable to follow instructions in other languages, despite our dataset containing almost exclusively\nEnglish. In Figure 44, we show our model’s propensity to answer instructions that may be harmful, a",
+   "e or task performance. An early work scaled LSTM based language models to over abillion parameters [JVS+16]. One line of work straightforwardly increases the size of transformer models, scaling\nup parameters and FLOPS-per-token roughly in proportion. Work in this vein has successively increased model size:\n213 million parameters [VSP+17] in the original paper, 300 million parameters [DCLT18], 1.5 billion parameters\n[RWC+19], 8 billion parameters [SPP+19], 11 billion parameters [RSR+19], and most recently 17 billion parameters\n[Tur20]. A second line of work has focused on increasing parameter count but not computation, as a means of",
+   "tperforms GPT-3 on most bench-\nmarks, despite being 10× smaller. We believe thatthis model will help democratize the access and\nstudy of LLMs, since it can be run on a single GPU.\nAt the higher-end of the scale, our 65B-parameter\nmodel is also competitive with the best large lan-\nguage models such as Chinchilla or PaLM-540B.\nUnlike Chinchilla, PaLM, or GPT-3, we only\nuse publicly available data, making our work com-\npatible with open-sourcing, while most existing\nmodels rely on data which is either not publicly\navailable or undocumented (e.g. “Books – 2TB” or\n“Social media conversations”). There exist some\nexceptions, notably OPT (Zhang et al., 2022),",
+   "ork (Li & Liang, 2021) on GPT-2, which adapts just the last two layers (FTTop2).4We still need the 350GB model during deployment; however, storing 100 adapted models only requires\n350GB + 35MB * 100 ≈354GB as opposed to 100 * 350GB ≈35TB.\n5For GPT-3 175B, the training throughput for full ﬁne-tuning is 32.5 tokens/s per V100 GPU; with the same\nnumber of weight shards for model parallelism, the throughput is 43.1 tokens/s per V100 GPU for LoRA.\n5",
+   "eliable and easier to control than GPT-3. We’ve found that our other metadata\n11GPT\nGPT\n(prompted)\nSFT\nPPO PPO-ptx\n0\n0.25\n0.50\n0.75\nPrevalence\nAttempts correct instruction\nGPT\nGPT\n(prompted)\nSFT\nPPO PPO-ptx\n0\n0.1\n0.2\n0.3\n0.4\n0.5\nFollows explicit constraints\nGPT\nGPT\n(prompted)\nSFT\nPPO PPO-ptx\n0\n0.2\n0.4\nHallucinations\nGPT\nGPT\n(prompted)\nSFT\nPPO PPO-ptx\n0\n0.25\n0.50\n0.75\nUses language appropriate\nfor customer assistant\nFigure 4: Metadata results on the API distribution. Note that, due to dataset sizes, these results are\ncollapsed across model sizes. See Appendix E.2 for analysis that includes model size. Compared"
+  ],
+  "answer": "According to the available information, no relevant information was found",
+  "refused": true,
+  "latency_s": 4.776,
+  "llm_calls": 4,
+  "scores": {}
+ },
+ "D|mh-01": {
+  "config": "D",
+  "id": "mh-01",
+  "type": "multi_hop",
+  "question": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "query_used": "Compare the problem LoRA solves with the problem RLHF in InstructGPT solves.",
+  "retrieved_sources": [
+   "07_instructgpt_rlhf.pdf",
+   "07_instructgpt_rlhf.pdf",
+   "07_instructgpt_rlhf.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "07_instructgpt_rlhf.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "07_instructgpt_rlhf.pdf",
+   "02_language_models_are_few_shot_learners_gpt3.pdf",
+   "06_lora_low_rank_adaptation.pdf",
+   "07_instructgpt_rlhf.pdf"
+  ],
+  "contexts": [
+   "ing generalization to instructions outside of the RLHF ﬁne-\ntuning distribution.In particular, we ﬁnd that InstructGPT shows ability to follow instructions\nin non-English languages, and perform summarization and question-answering for code. This is\n15",
+   "valuations. InstructGPT models generate about 25% fewer toxic outputs than GPT-3when prompted to be respectful. InstructGPT does not signiﬁcantly improve over GPT-3 on the\nWinogender (Rudinger et al., 2018) and CrowSPairs (Nangia et al., 2020) datasets.\nWe can minimize performance regressions on public NLP datasets by modifying our RLHF\nﬁne-tuning procedure.\nDuring RLHF ﬁne-tuning, we observe performance regressions compared\nto GPT-3 on certain public NLP datasets, notably SQuAD (Rajpurkar et al., 2018), DROP (Dua et al.,\n2019), HellaSwag (Zellers et al., 2019), and WMT 2015 French to English translation (Bojar et al.,",
+   "e T0++ variant). These datasets consist of a variety of NLP tasks, combined withnatural language instructions for each task. On our API prompt distribution, our FLAN and T0\nmodels perform slightly worse than our SFT baseline, and labelers signiﬁcantly prefer InstructGPT\nto these models (InstructGPT has a 73.4 ±2% winrate vs. our baseline, compared to 26.8 ±2% and\n29.8 ±2% for our version of T0 and FLAN, respectively).\nInstructGPT models show promising generalization to instructions outside of the RLHF ﬁne-\ntuning distribution.\nWe qualitatively probe InstructGPT’s capabilities, and ﬁnd that it is able to",
+   "s? We believe that LoRA makes it more tractable to answer this than full ﬁne-\n12tuning. 3) We mostly depend on heuristics to select the weight matrices to apply LoRA to. Are\nthere more principled ways to do it? 4) Finally, the rank-deﬁciency of ∆W suggests that W could\nbe rank-deﬁcient as well, which can also be a source of inspiration for future works.\nREFERENCES\nArmen Aghajanyan, Luke Zettlemoyer, and Sonal Gupta. Intrinsic Dimensionality Explains the\nEffectiveness of Language Model Fine-Tuning. arXiv:2012.13255 [cs], December 2020. URL\nhttp://arxiv.org/abs/2012.13255.\nZeyuan Allen-Zhu and Yuanzhi Li. What Can ResNet Learn Efﬁciently, Going Beyond Kernels? In",
+   "e-trained parameters. LoRA takes a step further and does not require the accumu-lated gradient update to weight matrices to have full-rank during adaptation. This means that when\napplying LoRA to all weight matrices and training all biases2, we roughly recover the expressive-\nness of full ﬁne-tuning by setting the LoRA rank r to the rank of the pre-trained weight matrices. In\nother words, as we increase the number of trainable parameters 3, training LoRA roughly converges\nto training the original model, while adapter-based methods converges to an MLP and preﬁx-based\nmethods to a model that cannot take long input sequences.\nNo Additional Inference Latency.",
+   "Adam,\nLoRA can reduce the number of trainable parameters by 10,000 times and theGPU memory requirement by 3 times. LoRA performs on-par or better than ﬁne-\ntuning in model quality on RoBERTa, DeBERTa, GPT-2, and GPT-3, despite hav-\ning fewer trainable parameters, a higher training throughput, and, unlike adapters,\nno additional inference latency. We also provide an empirical investigation into\nrank-deﬁciency in language model adaptation, which sheds light on the efﬁcacy of\nLoRA. We release a package that facilitates the integration of LoRA with PyTorch\nmodels and provide our implementations and model checkpoints for RoBERTa,",
+   "ining updates performs better than the simpler solution of increasing the KL co-efﬁcient. In Figure 33, we show that there is a value of the pretraining mix coefﬁcient that both\nreverses the performance regressions on SQuADv2 and DROP (the datasets we used for testing), and\nhas minimal reductions in validation reward. In contrast, increasing the KL coefﬁcient (Figure 34)\nleads to signiﬁcant decreases in validation reward and never fully recovers on DROP and SQuAD.\nChanging the KL model from the PPO init to GPT-3 gives similar results.\n4.3\nQualitative results\nInstructGPT models show promising generalization to instructions outside of the RLHF ﬁne-\ntuning distribution.",
+   " adapter layers and ˆLLN the number of trainable LayerNorms (e.g., in AdapterL).LoRA adds trainable pairs of rank decomposition matrices in parallel to existing weight matrices.\nAs mentioned in Section 4.2, we only apply LoRA to Wq and Wv in most experiments for simplicity.\nThe number of trainable parameters is determined by the rank r and the shape of the original weights:\n|Θ| = 2 × ˆLLoRA × dmodel × r, where ˆLLoRA is the number of weight matrices we apply LoRA to.\n6",
+   " (i.e., d) is as high as 12,288, making LoRA both storage- and compute-efﬁcient.LoRA possesses several key advantages.\n• A pre-trained model can be shared and used to build many small LoRA modules for dif-\nferent tasks. We can freeze the shared model and efﬁciently switch tasks by replacing the\nmatrices A and B in Figure 1, reducing the storage requirement and task-switching over-\nhead signiﬁcantly.\n• LoRA makes training more efﬁcient and lowers the hardware barrier to entry by up to 3\ntimes when using adaptive optimizers since we do not need to calculate the gradients or\nmaintain the optimizer states for most parameters. Instead, we only optimize the injected,",
+   ", which subset of weight matrices in a pre-trained Transformer should we adapt\n9to maximize downstream performance? 2) Is the “optimal” adaptation matrix ∆W really rank-\ndeﬁcient? If so, what is a good rank to use in practice? 3) What is the connection between ∆W and\nW? Does ∆W highly correlate with W? How large is ∆W comparing to W?\nWe believe that our answers to question (2) and (3) shed light on the fundamental principles of using\npre-trained language models for downstream tasks, which is a critical topic in NLP.\n7.1\nWHICH WEIGHT MATRICES IN TRANSFORMER SHOULD WE APPLY LORA TO?\nGiven a limited parameter budget, which types of weights should we adapt with LoRA to obtain",
+   " the former. By using the same 6B reward model and value function on policies ofall model sizes, it’s easier to compare the effect of policy model size on policy performance. A ﬁxed\nlearning rate of 9e-6 for the value function is used for 1.3B and the 6B policies and 5e-6 for the 175B\npolicy.\nOur initial RLHF experiments showed regressions on public NLP datasets, such as SQuADv2 and\nDROP, and we mitigate the regressions by mixing in pretraining gradients during PPO training. We\nuse 8 times more pretraining examples than the number of the RL training episodes. The pretraining\ndata is randomly drawn from the dataset used to train the GPT-3 models. For each minibatch, we",
+   " difference in the shifts for small\nmodels, which are unlikely to be memorizing.Overall, we have made a best effort to measure and document the effects of data contamination, and to note or outright\nremove problematic results, depending on the severity. Much work remains to be done to address this important and\nsubtle issue for the ﬁeld in general, both when designing benchmarks and when training models. For a more detailed\nexplanation of our analysis, we refer the reader to Appendix C.\n5\nLimitations\nGPT-3 and our analysis of it have a number of limitations. Below we describe some of these and suggest directions for\nfuture work.",
+   "\nSee Section D.2 for details on the hyperparameters used.\n5.4\nGPT-2 MEDIUM/LARGEHaving shown that LoRA can be a competitive alternative to full ﬁne-tuning on NLU, we hope to\nanswer if LoRA still prevails on NLG models, such as GPT-2 medium and large (Radford et al.,\nb). We keep our setup as close as possible to Li & Liang (2021) for a direct comparison. Due\nto space constraint, we only present our result on E2E NLG Challenge (Table 3) in this section.\nSee Section F.1 for results on WebNLG (Gardent et al., 2017) and DART (Nan et al., 2020). We\ninclude a list of the hyperparameters used in Section D.3.\n7",
+   " al., 2019; Krause et al., 2020). A promising future path is combining RLHF withother methods of steerability, for example using control codes (Keskar et al., 2019), or modifying the\nsampling procedure at inference time using a smaller model (Dathathri et al., 2019).\nWhile we mainly focus on RLHF, there are many other algorithms that could be used to train policies\non our demonstration and comparison data to get even better results. For example, one could explore\nexpert iteration (Anthony et al., 2017; Silver et al., 2017), or simpler behavior cloning methods that\nuse a subset of the comparison data. One could also try constrained optimization approaches (Achiam"
+  ],
+  "answer": "According to the available information, no relevant information was found",
+  "refused": true,
+  "latency_s": 7.005,
+  "llm_calls": 4,
+  "scores": {}
+ }
+}
