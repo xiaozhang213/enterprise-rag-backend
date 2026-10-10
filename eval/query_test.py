@@ -37,6 +37,7 @@ TEST_QUESTIONS = [
 def parse_sse_response(resp) -> dict:
     answer = ""
     sources = []
+    steps = []
     error = None
     event_type = "message"
 
@@ -54,10 +55,12 @@ def parse_sse_response(resp) -> dict:
                 answer += data.get("delta", "")
             elif event_type == "sources":
                 sources = data.get("sources", [])
+            elif event_type == "step":
+                steps.append(data.get("message", ""))
             elif event_type == "error":
                 error = data.get("message")
 
-    return {"answer": answer, "sources": sources, "error": error}
+    return {"answer": answer, "sources": sources, "steps": steps, "error": error}
 
 def debug_retrieval(question: str):
     import sys
@@ -75,7 +78,32 @@ def debug_retrieval(question: str):
     print(f"检索到 {len(matches)} 个chunk:")
     for i, m in enumerate(matches, 1):
         print(f"\n--- chunk {i} (score={m['score']:.3f}, source={m['source']}) ---")
-        print(m['content'][:300])   
+        print(m['content'][:300])
+
+
+def test_agentic_multi_hop():
+    """验证agent会不会自主发起多次检索:这个问题横跨两篇不同论文,
+    单次固定检索很难同时覆盖两个主题的内容。"""
+    question = "Compare what problem LoRA solves versus what problem RLHF/InstructGPT solves."
+
+    resp = requests.post(
+        f"{BASE_URL}/query/agentic", json={"question": question}, timeout=120, stream=True
+    )
+    if resp.status_code != 200:
+        print(f"[ERROR {resp.status_code}] {resp.text}")
+        return
+    result = parse_sse_response(resp)
+    if result["error"]:
+        print(f"[系统返回错误] {result['error']}")
+        return
+
+    print(f"问题: {question}\n")
+    print("Agent执行步骤:")
+    for step in result["steps"]:
+        print(f"  - {step}")
+    print(f"\n回答: {result['answer']}\n")
+    print(f"引用来源: {[s['source'] for s in result['sources']]}")
+
 
 def main():
     for i, case in enumerate(TEST_QUESTIONS, start=1):
@@ -105,5 +133,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    test_agentic_multi_hop()
     debug_retrieval("What are the two main components combined in RAG?")        
     debug_retrieval("What technique is used to align the model with human preferences?")

@@ -8,7 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import settings
-from app.routers import ingest, query
+from app.rate_limit import limiter
+from app.routers import agentic_query, ingest, query
+
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,6 +25,9 @@ app = FastAPI(
     description="A RAG-based Q&A system over enterprise documents.",
     version="0.1.0",
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -40,6 +47,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 app.include_router(ingest.router)
 app.include_router(query.router)
+app.include_router(agentic_query.router)
 
 
 @app.get("/health")
